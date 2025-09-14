@@ -1,4 +1,3 @@
-// frontend/pages/StoreDashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,6 @@ export default function StoreDashboard() {
 
     const token = localStorage.getItem("token");
 
-    // ---------------- Fetch Store Info & Ratings ----------------
     const fetchStoreData = async () => {
         try {
             const storeRes = await axios.get("http://localhost:5000/api/stores/dashboard", {
@@ -39,7 +37,6 @@ export default function StoreDashboard() {
         fetchStoreData();
     }, []);
 
-    // ---------------- Update Password ----------------
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
         try {
@@ -49,7 +46,7 @@ export default function StoreDashboard() {
             };
 
             await axios.put("http://localhost:5000/api/auth/update-password", payload, {
-                headers: { Authorization: `Bearer ${token}` } // ✅ token is enough now
+                headers: { Authorization: `Bearer ${token}` } 
             });
 
             setMessage("✅ Password updated successfully");
@@ -61,7 +58,6 @@ export default function StoreDashboard() {
     };
 
 
-    // ---------------- Logout ----------------
     const handleLogout = () => {
         localStorage.removeItem("token");
         navigate("/login");
@@ -82,7 +78,6 @@ export default function StoreDashboard() {
                 </button>
             </div>
 
-            {/* ---------------- Store Info & Average Rating ---------------- */}
             <div className="grid grid-cols-2 gap-4 mb-8">
                 <div className="p-4 bg-blue-100 rounded shadow">
                     <h2 className="text-xl font-semibold">Store Name</h2>
@@ -94,7 +89,6 @@ export default function StoreDashboard() {
                 </div>
             </div>
 
-            {/* ---------------- Update Password ---------------- */}
             <div className="mb-8 p-4 border rounded shadow">
                 <h2 className="text-2xl font-bold mb-4">Update Password</h2>
                 {message && <p className="mb-3 text-center text-sm text-blue-600">{message}</p>}
@@ -122,7 +116,6 @@ export default function StoreDashboard() {
                 </form>
             </div>
 
-            {/* ---------------- Ratings Table ---------------- */}
             <h2 className="text-2xl font-bold mb-4">User Ratings</h2>
             <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-300">

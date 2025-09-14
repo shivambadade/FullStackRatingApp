@@ -1,4 +1,3 @@
-// frontend/pages/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -10,13 +9,8 @@ export default function AdminDashboard() {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
-    // ✅ Include role in newUser state
     const [newUser, setNewUser] = useState({ name: "", email: "", password: "", address: "", role: "normal" });
-
-    // ✅ New store state
     const [newStore, setNewStore] = useState({ name: "", email: "", address: "", owner_id: "" });
-
-    // ✅ Filter states
     const [userFilters, setUserFilters] = useState({ name: "", email: "", address: "", role: "" });
     const [storeFilters, setStoreFilters] = useState({ name: "", email: "", address: "" });
 
@@ -40,9 +34,8 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         fetchData();
-    }, [userFilters, storeFilters]); // refetch when filters change
+    }, [userFilters, storeFilters]); 
 
-    // ---------------- Add New User Handler ----------------
     const handleAddUser = async (e) => {
         e.preventDefault();
         if (!newUser.name || !newUser.email || !newUser.password || !newUser.address || !newUser.role) {
@@ -60,7 +53,6 @@ export default function AdminDashboard() {
         }
     };
 
-    // ---------------- Add New Store Handler ----------------
     const handleAddStore = async (e) => {
         e.preventDefault();
         if (!newStore.name) {
@@ -77,12 +69,10 @@ export default function AdminDashboard() {
             setMessage("❌ Failed to add store");
         }
     };
-
-    // ---------------- Logout Handler ----------------
+//Logout functionality
     const handleLogout = () => {
-        // If using localStorage/sessionStorage for admin login
-        localStorage.removeItem("adminToken"); // adjust according to your auth
-        window.location.href = "/login"; // redirect to login page
+        localStorage.removeItem("adminToken");
+        window.location.href = "/login"; 
     };
 
     if (loading) return <p className="text-center mt-5">Loading dashboard...</p>;
@@ -100,7 +90,6 @@ export default function AdminDashboard() {
                 </button>
             </div>
 
-            {/* ✅ Dashboard Stats */}
             <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="p-4 bg-blue-100 rounded shadow">
                     <h2 className="text-xl font-semibold">Total Users</h2>
@@ -116,7 +105,6 @@ export default function AdminDashboard() {
                 </div>
             </div>
 
-            {/* ---------------- Add User Form ---------------- */}
             <div className="mb-8 p-4 border rounded shadow">
                 <h2 className="text-2xl font-bold mb-4">Add New User</h2>
                 {message && <p className="mb-3 text-center text-sm text-blue-600">{message}</p>}
@@ -164,7 +152,6 @@ export default function AdminDashboard() {
                 </form>
             </div>
 
-            {/* ---------------- Add Store Form ---------------- */}
             <div className="mb-8 p-4 border rounded shadow">
                 <h2 className="text-2xl font-bold mb-4">Add New Store</h2>
                 <form onSubmit={handleAddStore} className="grid grid-cols-2 gap-4">
@@ -177,14 +164,14 @@ export default function AdminDashboard() {
                     />
                     <input
                         type="email"
-                        placeholder="Email (optional)"
+                        placeholder="Email"
                         value={newStore.email}
                         onChange={(e) => setNewStore({ ...newStore, email: e.target.value })}
                         className="border p-2 rounded"
                     />
                     <input
                         type="text"
-                        placeholder="Address (optional)"
+                        placeholder="Address"
                         value={newStore.address}
                         onChange={(e) => setNewStore({ ...newStore, address: e.target.value })}
                         className="border p-2 rounded"
@@ -194,7 +181,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setNewStore({ ...newStore, owner_id: e.target.value })}
                         className="border p-2 rounded col-span-2"
                     >
-                        <option value="">Select Owner (optional)</option>
+                        <option value="">Select Owner</option>
                         {users.map((user) => (
                             <option key={user.id} value={user.id}>
                                 {user.name} ({user.role})
@@ -207,7 +194,6 @@ export default function AdminDashboard() {
                 </form>
             </div>
 
-            {/* ---------------- Users Table ---------------- */}
             <h2 className="text-2xl font-bold mb-4">Users</h2>
 
             {/* ✅ User Filters */}
@@ -266,10 +252,8 @@ export default function AdminDashboard() {
                 </tbody>
             </table>
 
-            {/* ---------------- Stores Table ---------------- */}
             <h2 className="text-2xl font-bold mb-4">Stores</h2>
 
-            {/* ✅ Store Filters */}
             <div className="grid grid-cols-3 gap-2 mb-2">
                 <input
                     type="text"

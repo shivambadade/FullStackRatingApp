@@ -1,4 +1,4 @@
-// backend/controllers/storeController.js
+
 const db = require("../config/db");
 
 const getStoreDashboard = (req, res) => {
@@ -88,7 +88,6 @@ const getAverageRating = (req, res) => {
     });
 };
 
-// Get all stores with user's submitted rating
 const getAllStoresForUser = (req, res) => {
     const userId = req.user.id;
     const query = `
@@ -115,7 +114,6 @@ const getAllStoresForUser = (req, res) => {
     });
 };
 
-// Submit or update rating
 const submitUserRating = (req, res) => {
     const userId = req.user.id;
     const { storeId, rating, comment } = req.body;
@@ -127,14 +125,14 @@ const submitUserRating = (req, res) => {
         if (err) return res.status(500).json({ message: "Database error" });
 
         if (results.length > 0) {
-            // Update existing
+
             const updateQuery = "UPDATE ratings SET rating = ?, comment = ? WHERE id = ?";
             db.query(updateQuery, [rating, comment || null, results[0].id], (err2) => {
                 if (err2) return res.status(500).json({ message: "Database error" });
                 res.json({ message: "Rating updated successfully" });
             });
         } else {
-            // Insert new
+
             const insertQuery = "INSERT INTO ratings (store_id, user_id, rating, comment) VALUES (?, ?, ?, ?)";
             db.query(insertQuery, [storeId, userId, rating, comment || null], (err2) => {
                 if (err2) return res.status(500).json({ message: "Database error" });

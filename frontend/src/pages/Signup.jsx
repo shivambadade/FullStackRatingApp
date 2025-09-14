@@ -1,4 +1,3 @@
-// client/pages/Signup.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -93,7 +92,6 @@ export default function Signup() {
                     </p>
                 )}
 
-                {/* Login Link */}
                 <p className="text-center mt-6 text-gray-600">
                     Already have an account?{" "}
                     <Link

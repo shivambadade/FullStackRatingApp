@@ -1,4 +1,3 @@
-// client/pages/Login.jsx
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -92,7 +91,6 @@ function Login() {
                     {loading ? "Logging in..." : "Login"}
                 </button>
 
-                {/* Sign Up Link */}
                 <p className="text-center text-gray-600 mt-4">
                     Don't have an account?{" "}
                     <Link

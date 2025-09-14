@@ -1,4 +1,3 @@
-// frontend/src/pages/UserDashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -11,7 +10,6 @@ export default function UserDashboard() {
 
     const token = localStorage.getItem("token");
 
-    // Fetch all stores + ratings
     const fetchStores = async () => {
         try {
             const res = await axios.get("http://localhost:5000/api/stores/all", {
@@ -28,7 +26,6 @@ export default function UserDashboard() {
         fetchStores();
     }, []);
 
-    // Live search filter
     useEffect(() => {
         const filtered = stores.filter(
             (s) =>
@@ -38,7 +35,6 @@ export default function UserDashboard() {
         setFilteredStores(filtered);
     }, [search, stores]);
 
-    // Submit or update rating
     const handleRatingSubmit = async (storeId, rating, comment) => {
         try {
             await axios.post(
@@ -46,15 +42,14 @@ export default function UserDashboard() {
                 { storeId, rating, comment },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            setMessage("✅ Rating submitted successfully");
-            fetchStores(); // Refresh
+            setMessage(" Rating submitted successfully");
+            fetchStores(); 
         } catch (err) {
             console.error(err);
-            setMessage("❌ Failed to submit rating");
+            setMessage(" Failed to submit rating");
         }
     };
 
-    // Update password
     const handlePasswordUpdate = async (e) => {
         e.preventDefault();
         setMessage("");
@@ -65,15 +60,14 @@ export default function UserDashboard() {
                 { userId: decoded.id, oldPassword: passwordData.oldPassword, newPassword: passwordData.newPassword },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            setMessage("✅ Password updated successfully");
+            setMessage("Password updated successfully");
             setPasswordData({ oldPassword: "", newPassword: "" });
         } catch (err) {
             console.error(err);
-            setMessage(err.response?.data?.message || "❌ Failed to update password");
+            setMessage(err.response?.data?.message || " Failed to update password");
         }
     };
 
-    // Logout
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.location.href = "/login";
@@ -82,7 +76,7 @@ export default function UserDashboard() {
     return (
         <div className="p-6 min-h-screen bg-gray-50">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Welcome User Dashboard 🎉</h1>
+                <h1 className="text-3xl font-bold">Welcome User Dashboard </h1>
                 <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Logout
                 </button>
@@ -90,7 +84,6 @@ export default function UserDashboard() {
 
             {message && <p className="mb-4 text-blue-600">{message}</p>}
 
-            {/* Inline Password Update */}
             <div className="mb-6 p-4 bg-white rounded shadow-md">
                 <h2 className="text-xl font-bold mb-3">Update Password</h2>
                 <form className="flex gap-3" onSubmit={handlePasswordUpdate}>
@@ -116,7 +109,6 @@ export default function UserDashboard() {
                 </form>
             </div>
 
-            {/* Store Search */}
             <input
                 type="text"
                 placeholder="Search stores by name or address..."
@@ -125,7 +117,6 @@ export default function UserDashboard() {
                 className="border p-2 mb-4 rounded w-full"
             />
 
-            {/* Stores Table */}
             <div className="overflow-x-auto">
                 <table className="min-w-full border border-gray-300 bg-white rounded">
                     <thead>

@@ -9,12 +9,10 @@ const registerNormalUser = async (req, res) => {
     try {
         const { name, email, address, password } = req.body;
 
-        // 1. Validate fields
         if (!name || !email || !address || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // 2. Check if user already exists
         db.query("SELECT * FROM users WHERE email = ?", [email], async (err, result) => {
             if (err) {
                 console.error("Database error:", err);
@@ -25,10 +23,8 @@ const registerNormalUser = async (req, res) => {
                 return res.status(409).json({ message: "Email already registered" });
             }
 
-            // 3. Hash password
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // 4. Insert user with role = 'normaluser'
             db.query(
                 "INSERT INTO users (name, email, address, password, role) VALUES (?, ?, ?, ?, ?)",
                 [name, email, address, hashedPassword, "normaluser"],
@@ -47,9 +43,6 @@ const registerNormalUser = async (req, res) => {
     }
 };
 
-
-
-// ---------------- Signup by admin  ----------------
 const signup = (req, res) => {
     const { name, email, password, address, role } = req.body;
 
@@ -57,7 +50,6 @@ const signup = (req, res) => {
         return res.status(400).json({ message: "Name, email, password required" });
     }
 
-    // Hash password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     const sql = "INSERT INTO users (name, email, password, address, role) VALUES (?, ?, ?, ?, ?)";
@@ -71,7 +63,6 @@ const signup = (req, res) => {
     });
 };
 
-// ---------------- Login ----------------
 const login = (req, res) => {
     const { email, password } = req.body;
 
@@ -100,7 +91,6 @@ const login = (req, res) => {
     });
 };
 
-// ---------------- Update Password ----------------
 const updatePassword = (req, res) => {
     try {
         const authHeader = req.headers.authorization;
@@ -109,7 +99,7 @@ const updatePassword = (req, res) => {
         }
 
         const token = authHeader.split(" ")[1];
-        const decoded = jwt.verify(token, JWT_SECRET); // ✅ Extract user from token
+        const decoded = jwt.verify(token, JWT_SECRET); 
 
         const { oldPassword, newPassword } = req.body;
 
