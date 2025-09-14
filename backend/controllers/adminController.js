@@ -2,29 +2,23 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const util = require("util");
 
-// Promisify db.query for async/await
 const query = util.promisify(db.query).bind(db);
 
-// ---------------- Add new user ----------------
+// Admin can Add new user 
 const addUser = async (req, res) => {
     try {
         const { name, email, password, address, role } = req.body;
 
-        // Validation
         if (!name || !email || !password || !address || !role) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Check if user already exists
         const existingUser = await query("SELECT id FROM users WHERE email = ?", [email]);
         if (existingUser.length > 0) {
             return res.status(400).json({ message: "User already exists" });
         }
-
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Insert user
         const result = await query(
             "INSERT INTO users (name, email, password, address, role) VALUES (?, ?, ?, ?, ?)",
             [name, email, hashedPassword, address, role]
@@ -37,7 +31,7 @@ const addUser = async (req, res) => {
     }
 };
 
-// ---------------- Add new store ----------------
+// Admin can Add new store 
 const addStore = async (req, res) => {
     try {
         const { name, email, address, owner_id } = req.body;
@@ -55,7 +49,6 @@ const addStore = async (req, res) => {
     }
 };
 
-// ---------------- Dashboard stats ----------------
 const getDashboardStats = async (req, res) => {
     try {
         const usersResult = await query("SELECT COUNT(*) AS totalUsers FROM users");
@@ -73,7 +66,6 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
-// ---------------- View all users ----------------
 const getAllUsers = async (req, res) => {
     try {
         let sql = "SELECT id, name, email, address, role FROM users";
@@ -97,7 +89,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// ---------------- View all stores ----------------
 const getAllStores = async (req, res) => {
     try {
         let sql = `
